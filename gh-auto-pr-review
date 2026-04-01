@@ -28,14 +28,13 @@ def run_gh(
 
 
 def print_filtered_diff(pr_ref: str) -> None:
-    result = run_gh(["pr", "diff", pr_ref, "--color", "always"], capture_stdout=True)
+    result = run_gh(
+        ["pr", "diff", pr_ref, "--color", "always", "--exclude", "pnpm-lock.yaml"],
+        capture_stdout=True,
+    )
 
-    skip_file = False
     for line in result.stdout.splitlines(keepends=True):
-        if line.startswith("diff --git "):
-            skip_file = line.rstrip("\n").endswith(" b/pnpm-lock.yaml")
-        if not skip_file:
-            print(line, end="")
+        print(line, end="")
 
 
 def is_yes(answer: str) -> bool:
